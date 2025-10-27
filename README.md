@@ -1,0 +1,128 @@
+# FortiGate Backup Automation
+
+Automated backup solution for FortiGate firewalls using Ansible.
+
+## Features
+
+- ✅ Automated configuration backups
+- ✅ Device information documentation
+- ✅ Automatic retention management (configurable per device)
+- ✅ Parallel execution for multiple devices
+- ✅ Comprehensive error handling
+- ✅ Audit logging
+- ✅ Support for multiple device groups
+
+## Quick Start
+
+### 1. Install Prerequisites
+```bash
+pip3 install ansible fortiosapi
+ansible-galaxy collection install -r requirements.yml
+```
+
+### 2. Configure Credentials
+```bash
+export FORTIGATE_USER="admin"
+export FORTIGATE_PASSWORD="YourPassword"
+```
+
+### 3. Update Inventory
+
+Edit `hosts.yml` and update IP addresses for your FortiGate devices.
+
+### 4. Run Backup
+```bash
+# Backup all devices
+ansible-playbook backup_fortigate.yml
+
+# Backup specific group
+ansible-playbook backup_fortigate.yml --limit production_fortigates
+
+# Backup single device
+ansible-playbook backup_fortigate.yml --limit fw-prod-01
+```
+
+## Directory Structure
+```
+fortigate-backup/
+├── ansible.cfg
+├── backup_fortigate.yml
+├── hosts.yml
+├── requirements.yml
+├── group_vars/
+│   ├── all.yml
+│   └── fortigates/
+│       ├── vars.yml
+│       └── vault.yml
+├── host_vars/
+│   ├── fw-prod-01.yml
+│   ├── fw-prod-02.yml
+│   ├── fw-branch-01.yml
+│   ├── fw-branch-02.yml
+│   └── fw-dmz-01.yml
+└── backups/
+└── backup.log
+```
+
+## Configuration
+
+### Global Settings (group_vars/all.yml)
+
+- `backup_dir`: Backup storage location
+- `retention_days`: Default retention period
+- `backup_timestamp`: Timestamp format
+
+### FortiGate Settings (group_vars/fortigates/vars.yml)
+
+- Connection parameters (HTTPS, SSL, timeouts)
+- Authentication configuration
+- FortiGate-specific settings
+
+### Per-Device Settings (host_vars/)
+
+- Device metadata (site, location, role)
+- Custom retention periods
+- Device-specific overrides
+
+## Scheduling
+
+### Using Cron
+```bash
+0 2 * * * cd /opt/fortigate-backup && source ~/.fortigate_credentials && ansible-playbook forti_backup.yaml
+```
+
+### Using Systemd
+
+See deployment documentation for systemd timer setup.
+
+## Security
+
+- Use Ansible Vault for credential storage
+- Set appropriate file permissions
+- Secure backup directory
+- Use dedicated API user with read-only access
+
+## Troubleshooting
+
+### Test Connectivity
+```bash
+ansible fortigates -m fortinet.fortios.fortios_monitor_fact -a "selector=system_status"
+```
+
+### Check Variables
+```bash
+ansible-inventory --host fw-prod-01
+```
+
+### Verbose Output
+```bash
+ansible-playbook forti_backup.yaml -vvv
+```
+
+## License
+
+MIT
+
+## Author
+
+Ehsan Momeni Bashusqeh

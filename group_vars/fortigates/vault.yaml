@@ -1,0 +1,13 @@
+---
+# This file should be encrypted with ansible-vault
+# Create with: ansible-vault create group_vars/fortigates/vault.yml
+# Edit with: ansible-vault edit group_vars/fortigates/vault.yml
+# Encrypt with: ansible-vault encrypt group_vars/fortigates/vault.yml
+
+# FortiGate credentials
+vault_fortigate_user: admin
+vault_fortigate_password: YourSecurePassword123
+
+# Optional: Different credentials for different environments
+# vault_fortigate_prod_password: ProductionPassword
+# vault_fortigate_dev_password: DevPassword

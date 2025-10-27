@@ -1,0 +1,103 @@
+---
+- name: Backup FortiGate Firewalls
+  hosts: fortigates
+  gather_facts: no
+  connection: httpapi
+
+  tasks:
+    - name: Ensure local backup directory exists
+      ansible.builtin.file:
+        path: "{{ backup_dir }}"
+        state: directory
+        mode: '0755'
+      run_once: true
+      delegate_to: localhost
+
+    - name: Backup FortiGate configuration
+      fortinet.fortios.fortios_monitor_fact:
+        selector: 'system_config_backup'
+        params:
+          scope: "{{ fortigate_backup_scope }}"
+      register: backup_result
+      ignore_errors: yes
+
+    - name: Save configuration to file
+      ansible.builtin.copy:
+        content: "{{ backup_result.meta.raw }}"
+        dest: "{{ backup_dir }}/{{ inventory_hostname }}_config_{{ backup_timestamp }}.conf"
+        mode: '0640'
+      delegate_to: localhost
+      register: save_result
+      when:
+        - backup_result is succeeded
+        - backup_result.meta.raw is defined
+
+    - name: Get system status for documentation
+      fortinet.fortios.fortios_monitor_fact:
+        selector: 'system_status'
+      register: system_status
+      ignore_errors: yes
+      when: backup_result is succeeded
+
+    - name: Save system information
+      ansible.builtin.copy:
+        content: |
+          Backup Information for {{ inventory_hostname }}
+          ==========================================
+          Timestamp: {{ backup_timestamp }}
+          Site: {{ fortigate_site | default('N/A') }}
+          Location: {{ fortigate_location | default('N/A') }}
+          Role: {{ fortigate_role | default('N/A') }}
+          Environment: {{ fortigate_environment | default('N/A') }}
+          ==========================================
+          Device Details:
+          Hostname: {{ system_status.meta.results.hostname | default('N/A') }}
+          Version: {{ system_status.meta.results.version | default('N/A') }}
+          Serial Number: {{ system_status.meta.results.serial | default('N/A') }}
+          Model: {{ system_status.meta.results.model | default('N/A') }}
+          ==========================================
+        dest: "{{ backup_dir }}/{{ inventory_hostname }}_info_{{ backup_timestamp }}.txt"
+        mode: '0640'
+      delegate_to: localhost
+      when:
+        - system_status is succeeded
+        - system_status.meta.results is defined
+
+    - name: Find old backup files
+      ansible.builtin.find:
+        paths: "{{ backup_dir }}"
+        patterns:
+          - "*.conf"
+          - "*.txt"
+        age: "{{ retention_days }}d"
+      register: old_backups
+      delegate_to: localhost
+      run_once: true
+
+    - name: Remove old backups
+      ansible.builtin.file:
+        path: "{{ item.path }}"
+        state: absent
+      loop: "{{ old_backups.files }}"
+      delegate_to: localhost
+      run_once: true
+      when: old_backups.files | length > 0
+
+    - name: Log backup completion
+      ansible.builtin.lineinfile:
+        path: "{{ backup_dir }}/backup.log"
+        line: "{{ backup_timestamp }} - {{ inventory_hostname }} - {{ fortigate_site | default('Unknown') }} - {{ 'SUCCESS' if save_result is succeeded else 'FAILED' }}"
+        create: yes
+        mode: '0640'
+      delegate_to: localhost
+      when: backup_result is not skipped
+
+    - name: Display backup status - Success
+      ansible.builtin.debug:
+        msg: "✓ Successfully backed up {{ inventory_hostname }} ({{ fortigate_site | default('Unknown Site') }}) to {{ backup_dir }}/{{ inventory_hostname }}_config_{{ backup_timestamp }}.conf"
+      when: save_result is succeeded
+
+    - name: Display backup status - Failed
+      ansible.builtin.debug:
+        msg: "✗ Failed to backup {{ inventory_hostname }} ({{ fortigate_site | default('Unknown Site') }}). Check logs for details."
+      when: backup_result is failed

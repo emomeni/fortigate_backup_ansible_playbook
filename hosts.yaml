@@ -1,0 +1,23 @@
+---
+all:
+  children:
+    fortigates:
+      children:
+        production_fortigates:
+          hosts:
+            fw-prod-01:
+              ansible_host: 192.168.1.10
+            fw-prod-02:
+              ansible_host: 192.168.1.11
+        
+        branch_fortigates:
+          hosts:
+            fw-branch-01:
+              ansible_host: 192.168.2.10
+            fw-branch-02:
+              ansible_host: 192.168.3.10
+        
+        dmz_fortigates:
+          hosts:
+            fw-dmz-01:
+              ansible_host: 10.0.1.10

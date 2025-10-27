@@ -1,0 +1,11 @@
+---
+# Host-specific variables for fw-branch-02
+
+# Device information
+fortigate_site: "Branch Office 2"
+fortigate_location: "Utrecht, Netherlands"
+fortigate_role: "Branch Internet Gateway & VPN"
+fortigate_environment: "production"
+
+# Branch offices might have shorter retention
+retention_days: 14

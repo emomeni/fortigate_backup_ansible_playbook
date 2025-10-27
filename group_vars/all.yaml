@@ -1,0 +1,10 @@
+---
+# Variables applicable to all hosts in the inventory
+
+# Backup configuration
+backup_timestamp: "{{ lookup('pipe', 'date +%Y-%m-%d_%H%M%S') }}"
+backup_dir: "./backups"
+retention_days: 30
+
+# Logging
+ansible_log_path: "./ansible.log"

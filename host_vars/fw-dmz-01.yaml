@@ -1,0 +1,11 @@
+---
+# Host-specific variables for fw-dmz-01
+
+# Device information
+fortigate_site: "DMZ"
+fortigate_location: "Amsterdam, Netherlands"
+fortigate_role: "DMZ Perimeter Firewall"
+fortigate_environment: "production"
+
+# DMZ firewalls might need longer retention for compliance
+retention_days: 90

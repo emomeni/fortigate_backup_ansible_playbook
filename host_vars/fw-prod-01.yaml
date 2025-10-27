@@ -1,0 +1,15 @@
+---
+# Host-specific variables for fw-prod-01
+
+# Device information
+fortigate_site: "Headquarters - Main Data Center"
+fortigate_location: "Amsterdam, Netherlands"
+fortigate_role: "Primary Internet Gateway"
+fortigate_environment: "production"
+
+# Optional: Override default backup retention for critical devices
+# retention_days: 90
+
+# Optional: Device-specific connection settings if needed
+# ansible_httpapi_port: 8443
+# ansible_user: "prod_admin"

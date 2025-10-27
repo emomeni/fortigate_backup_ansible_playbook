@@ -1,0 +1,25 @@
+---
+# Variables specific to FortiGate firewall group
+
+# Connection settings
+ansible_network_os: fortinet.fortios.fortios
+ansible_connection: httpapi
+ansible_httpapi_use_ssl: yes
+ansible_httpapi_validate_certs: no
+ansible_httpapi_port: 443
+
+# Timeout settings
+ansible_command_timeout: 30
+ansible_httpapi_timeout: 30
+
+# Authentication - Use environment variables (recommended)
+ansible_user: "{{ lookup('env', 'FORTIGATE_USER') | default('admin') }}"
+ansible_password: "{{ lookup('env', 'FORTIGATE_PASSWORD') }}"
+
+# Or use vault variables (uncomment if using vault)
+# ansible_user: "{{ vault_fortigate_user }}"
+# ansible_password: "{{ vault_fortigate_password }}"
+
+# FortiGate specific settings
+fortigate_backup_scope: global
+fortigate_api_version: v2

@@ -1,0 +1,30 @@
+# Ansible
+*.retry
+ansible.log
+
+# Backups directory
+backups/
+
+# Vault password files
+.vault_pass
+vault_password.txt
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environment variables
+.env
+.fortigate_credentials
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
