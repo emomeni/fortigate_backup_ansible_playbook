@@ -17,7 +17,7 @@ Automated backup solution for FortiGate firewalls using Ansible.
 ### 1. Install Prerequisites
 ```bash
 pip3 install ansible fortiosapi
-ansible-galaxy collection install -r requirements.yml
+ansible-galaxy collection install -r requirements.yaml
 ```
 
 ### 2. Configure Credentials
@@ -28,51 +28,51 @@ export FORTIGATE_PASSWORD="YourPassword"
 
 ### 3. Update Inventory
 
-Edit `hosts.yml` and update IP addresses for your FortiGate devices.
+Edit `hosts.yaml` and update IP addresses for your FortiGate devices.
 
 ### 4. Run Backup
 ```bash
 # Backup all devices
-ansible-playbook backup_fortigate.yml
+ansible-playbook forti_backup.yaml
 
 # Backup specific group
-ansible-playbook backup_fortigate.yml --limit production_fortigates
+ansible-playbook forti_backup.yaml --limit production_fortigates
 
 # Backup single device
-ansible-playbook backup_fortigate.yml --limit fw-prod-01
+ansible-playbook forti_backup.yaml --limit fw-prod-01
 ```
 
 ## Directory Structure
 ```
 fortigate-backup/
 ├── ansible.cfg
-├── backup_fortigate.yml
-├── hosts.yml
-├── requirements.yml
+├── backup_fortigate.yaml
+├── hosts.yaml
+├── requirements.yaml
 ├── group_vars/
-│   ├── all.yml
+│   ├── all.yaml
 │   └── fortigates/
-│       ├── vars.yml
-│       └── vault.yml
+│       ├── vars.yaml
+│       └── vault.yaml
 ├── host_vars/
-│   ├── fw-prod-01.yml
-│   ├── fw-prod-02.yml
-│   ├── fw-branch-01.yml
-│   ├── fw-branch-02.yml
-│   └── fw-dmz-01.yml
+│   ├── fw-prod-01.yaml
+│   ├── fw-prod-02.yaml
+│   ├── fw-branch-01.yaml
+│   ├── fw-branch-02.yaml
+│   └── fw-dmz-01.yaml
 └── backups/
 └── backup.log
 ```
 
 ## Configuration
 
-### Global Settings (group_vars/all.yml)
+### Global Settings (group_vars/all.yaml)
 
 - `backup_dir`: Backup storage location
 - `retention_days`: Default retention period
 - `backup_timestamp`: Timestamp format
 
-### FortiGate Settings (group_vars/fortigates/vars.yml)
+### FortiGate Settings (group_vars/fortigates/vars.yaml)
 
 - Connection parameters (HTTPS, SSL, timeouts)
 - Authentication configuration
@@ -125,4 +125,4 @@ MIT
 
 ## Author
 
-Ehsan Momeni Bashusqeh
+Ehsan Momeni Bashusqeh, Network Automation Engineer
