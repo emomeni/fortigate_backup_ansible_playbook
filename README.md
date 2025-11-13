@@ -2,7 +2,9 @@
 
 Automated backup solution for FortiGate firewalls using Ansible.
 
-[![Watch the video](https://img.youtube.com/vi/9uGvibNRikI/maxresdefault.jpg)](https://youtu.be/9uGvibNRikI)
+## Watch the Video on YouTube
+[![Watch the video](./images/fortigate_automation_2_thumbnail.jpg)](https://youtu.be/9uGvibNRikI?si=pZb78t-LjLSXdysn)
+
 
 ## Features
 
