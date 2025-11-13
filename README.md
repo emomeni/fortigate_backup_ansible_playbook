@@ -2,6 +2,8 @@
 
 Automated backup solution for FortiGate firewalls using Ansible.
 
+[![Watch the video](https://img.youtube.com/vi/9uGvibNRikI/maxresdefault.jpg)](https://youtu.be/9uGvibNRikI)
+
 ## Features
 
 - ✅ Automated configuration backups
